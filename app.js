@@ -1,11 +1,14 @@
 const express = require('express');
+const path = require('path');
 
 const app = express();
+
+app.set('views', path.resolve(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 app.get('/random/:min/:max', function(req,res) {
     const min = req.params.min;
     const max = req.params.max;
-    console.log(`MIN ${min} and MAX ${max}`);
     
     if (isNaN(min) || isNaN(max)){
         res.status(400);
@@ -16,8 +19,7 @@ app.get('/random/:min/:max', function(req,res) {
     }
 
     const random = Math.random()*(max-min) + min;
-
-    res.status(200).json({
+    res.status(200).render('index', {
         number: random
     });
 });
